@@ -81,8 +81,16 @@ class Board(object):
         x_8 = self._board[6].count('O')
         x_9 = self._board[8].count('X')
         x_a = self._board[8].count('O')
+        x_b = self._board[1].count('X')
+        x_c = self._board[1].count('O')
+        x_d = self._board[3].count('X')
+        x_e = self._board[3].count('O')
+        x_f = self._board[5].count('X')
+        x_g = self._board[5].count('O')
+        x_h = self._board[7].count('X')
+        x_i = self._board[7].count('O')
 
-        return [1, x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8, x_9, x_a]
+        return [1, x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8, x_9, x_a, x_b, x_c, x_d, x_e, x_f, x_g, x_h, x_i]
 
 
 

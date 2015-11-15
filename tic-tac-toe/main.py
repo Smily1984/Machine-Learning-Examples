@@ -27,7 +27,7 @@ from Generalizer import Generalizer
 from Critic import Critic
 
 
-NO_OF_TRAINING_EXAMPLES = 1000
+NO_OF_TRAINING_EXAMPLES = 2000
 BOARD_LENGTH = 9
 
 def main():
@@ -35,7 +35,7 @@ def main():
     print " Playing against itself... Please wait... "
 
     generator = Generator(BOARD_LENGTH)
-    generalizer = Generalizer(11)
+    generalizer = Generalizer(19)
     critic = Critic(generalizer)
 
     wins = 0
@@ -77,6 +77,7 @@ def main():
 
 
     W = generalizer.get_weights()
+    print W
 
     print wins, ties, loses
 
