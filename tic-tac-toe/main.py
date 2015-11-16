@@ -19,12 +19,13 @@
         LMS (Least mean squares), gradient descent.
 """
 
-import math, random, datetime, copy
+import math, random, copy
 
 from Board import Board
 from ExperimentGenerator import Generator
 from Generalizer import Generalizer
 from Critic import Critic
+from PerformanceSystem import PerformanceSystem
 
 
 NO_OF_TRAINING_EXAMPLES = 2000
@@ -32,54 +33,38 @@ BOARD_LENGTH = 9
 
 def main():
 
+    wins = 0; ties = 0; loses = 0;
+
     print " Playing against itself... Please wait... "
 
     generator = Generator(BOARD_LENGTH)
     generalizer = Generalizer(19)
     critic = Critic(generalizer)
 
-    wins = 0
-    ties = 0
-    loses = 0
-
     for i in xrange(NO_OF_TRAINING_EXAMPLES):
-
         board = generator.generate_board()
-        ended = board.winner()
-        while ended is None:
 
-            weights = generalizer.get_weights()
-            position = board.max_learner_utility(weights)
-            # print position
-            board._board[position] = 'O'
-
-            critic.add_training_example(copy.deepcopy(board), board.winner())
-
-            learner_move = generator.next_trainer_move(board, weights)
-            if learner_move is not None:
-                  board._board[learner_move] = 'X'
-
-            ended = board.winner()
-
-        if ended == 100:
-            wins+=1
-        elif ended == -100:
-            loses += 1
-        elif ended == 0:
-            ties += 1
-
-        critic.add_training_example(copy.deepcopy(board), ended)
+        performance_system = PerformanceSystem(board, generalizer, critic, generator)
+        result = performance_system.improve_system()
 
         examples, values = critic.get_training_examples()
         generalizer.set_training_examples(examples)
         generalizer.set_training_values(values)
         generalizer.gradient_descent()
 
+        if result == 100: wins += 1
+        if result == -100: loses += 1
+        if result == 0: ties += 1
+
+
 
     W = generalizer.get_weights()
-    print W
 
     print wins, ties, loses
+
+    """
+        Playing against human...
+    """
 
     while True:
         human_board = Board(['-', '-', '-', '-', '-', '-', '-', '-', '-', ])
